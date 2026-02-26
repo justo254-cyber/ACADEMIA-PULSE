@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACADEMIA PULSE</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+ 
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: #0d1b2a; color: white; min-height: 100vh; overflow-x: hidden; }
+        #vanta-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        
+        .page { display: none; min-height: 100vh; width: 100%; position: relative; z-index: 2; flex-direction: column; }
+        .centered-page { justify-content: center; align-items: center; text-align: center; padding: 20px; }
+        
+        /* Global Chat - Now Minimizable */
+        #roblox-chat { position: fixed; top: 10px; right: 10px; width: 300px; height: 200px; background: rgba(0,0,0,0.8); border: 1px solid #ffcc00; border-radius: 5px; z-index: 3000; display: none; flex-direction: column; transition: 0.3s; }
+        #roblox-chat.minimized { height: 35px; overflow: hidden; }
+        #global-chat-header { padding: 5px 10px; background: #ffcc00; color: black; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; font-size: 0.8rem; }
+        #chat-display { flex: 1; overflow-y: auto; font-size: 0.85rem; color: #fff; text-shadow: 1px 1px #000; padding: 5px; }
+        #chat-input-roblox { background: rgba(255,255,255,0.2); border: 1px solid #555; color: white; padding: 5px; border-radius: 3px; outline: none; margin: 5px; }
+
+        /* Forms Card */
+        .auth-card { background: white; color: black; padding: 30px; border-radius: 15px; width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .auth-card input, .auth-card select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 0.9rem; }
+        
+        /* Sidebar */
+        .sidebar { width: 260px; background: #1b263b; color: white; padding: 15px; display: flex; flex-direction: column; border-right: 2px solid #ffcc00; position: sticky; top: 0; height: 100vh; z-index: 10; }
+        .subject-list { flex-grow: 1; overflow-y: auto; margin-bottom: 10px; }
+        .subject { background: #2c3e50; padding: 12px; margin: 8px 0; border-radius: 5px; cursor: pointer; transition: 0.3s; font-size: 0.9rem; border-left: 0 solid #ffcc00; }
+        .subject:hover { background: #ffcc00; color: black; font-weight: bold; border-left: 5px solid #fff; }
+ 
+        .fun-zone-btn { background: linear-gradient(45deg, #ff0000, #990000); color: white; padding: 15px; border-radius: 10px; cursor: pointer; text-align: center; font-weight: bold; border: 2px solid white; box-shadow: 0 0 15px rgba(255,0,0,0.5); }
+ 
+        /* Dashboard & Content */
+        #dashboard { background: #f4f7f6; color: black; }
+        .dashboard-container { display: flex; width: 100%; }
+        .content { flex: 1; padding: 30px; position: relative; z-index: 100; background: #fdfdfd; min-height: 100vh; overflow-y: auto; }
+ 
+        /* Sim & Video Styles */
+        .sim-container { width: 100%; height: 600px; border-radius: 15px; overflow: hidden; border: 2px solid #1b263b; margin-top: 20px; }
+        .sim-container iframe { width: 100%; height: 100%; border: none; }
+        .video-box { background: #fff; padding: 15px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 100%; margin-top: 15px; }
+        .video-box iframe { width: 100%; height: 350px; border-radius: 10px; border: none; }
+
+        /* TIC TAC TOE */
+        .game-container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); max-width: 400px; margin: auto; text-align: center; }
+        .ttt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; opacity: 0.3; pointer-events: none; transition: 0.5s; }
+        .ttt-grid.active { opacity: 1; pointer-events: auto; }
+        .cell { height: 100px; background: #f0f0f0; border: 2px solid #1b263b; border-radius: 10px; font-size: 3rem; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; color: #1b263b; }
+ 
+        /* PulseBot UI */
+        #chat-widget { position: fixed; bottom: 0; right: 20px; width: 320px; background: white; border-radius: 15px 15px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.2); z-index: 2000; transition: 0.3s; border: 1px solid #ccc; }
+        #chat-widget.minimized { transform: translateY(calc(100% - 45px)); }
+        #chat-header { background: #1b263b; color: #ffcc00; padding: 12px; font-weight: bold; cursor: pointer; border-radius: 14px 14px 0 0; display: flex; justify-content: space-between; }
+        #chat-logs { height: 250px; overflow-y: auto; padding: 15px; color: #333; font-size: 0.9rem; }
+        .chat-input { display: flex; border-top: 1px solid #eee; }
+        .chat-input input { flex: 1; padding: 12px; border: none; outline: none; }
+        .chat-input button { background: #ffcc00; border: none; padding: 0 15px; cursor: pointer; font-weight: bold; }
+
+        footer { background: #0d1b2a; color: white; padding: 40px 20px; text-align: center; border-top: 3px solid #ffcc00; position: relative; z-index: 100; }
+        .btn { padding: 12px 25px; border: none; border-radius: 20px; background: #ffcc00; font-weight: bold; cursor: pointer; margin: 5px; transition: 0.2s; }
+    </style>
+</head>
+<body>
+ 
+<div id="vanta-canvas"></div>
+
+<div id="roblox-chat">
+    <div id="global-chat-header" onclick="toggleGlobalChat()">
+        <span>GLOBAL CHAT</span>
+        <span id="global-chat-icon">_</span>
+    </div>
+    <div id="chat-display"></div>
+    <input type="text" id="chat-input-roblox" placeholder="Press Enter to chat...">
+</div>
+ 
+<div id="intro" class="page centered-page" style="display:flex;">
+    <h1>ACADEMIA PULSE</h1>
+    <p>Empowering minds through Interactive Learning.</p>
+    <button class="btn" onclick="showPage('auth-choice')">Enter Academy</button>
+</div>
+ 
+<div id="auth-choice" class="page centered-page">
+    <h2>Portal Access</h2>
+    <button class="btn" onclick="showPage('signup-page')">Sign Up</button>
+    <button class="btn" style="background:transparent; border:1px solid #ffcc00; color:white;" onclick="showPage('signin-page')">Sign In</button>
+</div>
+
+<div id="signup-page" class="page centered-page">
+    <div class="auth-card">
+        <h3>Create Account</h3>
+        <input type="text" id="su-name" placeholder="Full Name">
+        <input type="text" id="su-school" placeholder="School Name">
+        <select id="su-system">
+            <option value="" disabled selected>Learning System</option>
+            <option value="844">8-4-4 System</option>
+            <option value="CBC">CBC System</option>
+        </select>
+        <input type="text" id="su-county" placeholder="County">
+        <input type="text" id="su-contact" placeholder="Email or Phone Number">
+        <input type="password" id="su-pass" placeholder="Password">
+        <input type="password" id="su-confirm" placeholder="Repeat Password">
+        <div style="text-align: left; font-size: 0.8rem; margin: 10px 0;">
+            <input type="checkbox" id="su-terms"> I accept Terms & Conditions
+        </div>
+        <button class="btn" style="width:100%" onclick="handleSignUp()">Sign Up</button>
+        <p style="margin-top:10px; font-size:0.8rem; cursor:pointer;" onclick="showPage('signin-page')">Already have an account? Sign In</p>
+    </div>
+</div>
+ 
+<div id="signin-page" class="page centered-page">
+    <div class="auth-card">
+        <h3>Login</h3>
+        <input type="text" id="si-user" placeholder="Username">
+        <input type="password" placeholder="Password">
+        <button class="btn" style="width:100%" onclick="handleSignIn()">Login</button>
+        <p style="margin-top:10px; font-size:0.8rem; cursor:pointer;" onclick="showPage('signup-page')">Need an account? Sign Up</p>
+    </div>
+</div>
+ 
+<div id="dashboard" class="page">
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <h2 style="color:#ffcc00; text-align:center; margin-bottom:20px;">PULSE</h2>
+            <div class="subject-list">
+                <div class="subject" onclick="loadSubject('Chemistry')">?? Chemistry (Interactive)</div>
+                <div class="subject" onclick="loadSubject('Biology')">?? Biology (Simulated)</div>
+                <div class="subject" onclick="loadSubject('Geography')">?? Geography (Merlot)</div>
+                <div class="subject" onclick="loadSubject('Physics')">? Physics (Circuits)</div>
+                <div class="subject" onclick="loadSubject('Mathematics')">?? Mathematics (GeoGebra)</div>
+                <div class="subject" onclick="loadSubject('PE')">?? Physical Exercise</div>
+            </div>
+            <div class="fun-zone-btn" onclick="loadFunZone()">?? FUN ZONE</div>
+        </div>
+ 
+        <div class="content" id="contentArea">
+            <h1 id="welcome-msg">WELCOME</h1>
+            <p>Select a module from the sidebar to begin.</p>
+        </div>
+    </div>
+ 
+    <div id="chat-widget">
+        <div id="chat-header" onclick="toggleChat()"><span>PulseBot</span><span id="chat-icon">-</span></div>
+        <div id="chat-logs"><div><b>Bot:</b> Ready to help! Ask me anything about your subjects.</div></div>
+        <div class="chat-input"><input type="text" id="chatIn" placeholder="Type here..."><button onclick="sendChat()">Send</button></div>
+    </div>
+ 
+    <footer>
+        <p>Deployed by <strong>Justus and Mark</strong></p>
+        <a href="https://wa.me/254715286771" style="color:#25d366; text-decoration:none; font-weight:bold;" target="_blank">WhatsApp: 0715286771</a>
+    </footer>
+</div>
+ 
+<script>
+    let vantaEffect = VANTA.NET({ el: "#vanta-canvas", color: 0xffcc00, backgroundColor: 0x0d1b2a, points: 10.0 });
+    let globalUsername = "User";
+    let gameBoard = ["","","","","","","","",""];
+
+    function toggleGlobalChat() {
+        const chat = document.getElementById('roblox-chat');
+        const icon = document.getElementById('global-chat-icon');
+        chat.classList.toggle('minimized');
+        icon.innerText = chat.classList.contains('minimized') ? '?' : '_';
+    }
+
+    document.getElementById('chat-input-roblox').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter' && this.value.trim() !== "") {
+            const display = document.getElementById('chat-display');
+            display.innerHTML += `<div class="chat-msg"><span class="chat-user">[${globalUsername}]:</span> ${this.value}</div>`;
+            this.value = ""; display.scrollTop = display.scrollHeight;
+        }
+    });
+
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+        document.getElementById(id).style.display = (id === 'dashboard') ? 'block' : 'flex';
+        if(id === 'dashboard') document.getElementById('roblox-chat').style.display = 'flex';
+    }
+
+    function handleSignUp() {
+        globalUsername = document.getElementById('su-name').value || "Scholar";
+        document.getElementById('welcome-msg').innerText = "WELCOME, " + globalUsername.toUpperCase();
+        if(vantaEffect) vantaEffect.destroy(); showPage('dashboard');
+    }
+
+    function handleSignIn() {
+        globalUsername = document.getElementById('si-user').value || "Scholar";
+        document.getElementById('welcome-msg').innerText = "WELCOME, " + globalUsername.toUpperCase();
+        if(vantaEffect) vantaEffect.destroy(); showPage('dashboard');
+    }
+
+    function loadSubject(name) {
+        const area = document.getElementById('contentArea');
+        area.innerHTML = ""; 
+        if (name === 'Chemistry') initChemistry();
+        else if (name === 'Biology') initBiology();
+        else if (name === 'Geography') initGeography();
+        else if (name === 'Physics') initPhysics();
+        else if (name === 'Mathematics') initMath();
+        else if (name === 'PE') initPE();
+    }
+
+    function initChemistry() {
+        const area = document.getElementById('contentArea');
+        area.innerHTML = `<h1>Chemistry: Molecule Shapes Interactive</h1><div class="sim-container"><iframe src="https://phet.colorado.edu/sims/html/molecule-shapes/latest/molecule-shapes_en.html"></iframe></div>`;
+    }
+
+    function initBiology() {
+        const area = document.getElementById('contentArea');
+        area.innerHTML = `<h1>Biology: Natural Selection Simulation</h1><div class="sim-container"><iframe src="https://phet.colorado.edu/sims/html/natural-selection/latest/natural-selection_en.html"></iframe></div><div class="math-card" style="margin-top:20px;"><h3>Adaptation of a Tree</h3><p>Trees adapt through specialized root systems and waxy leaf coatings.</p></div>`;
+    }
+
+    function initGeography() {
+        const area = document.getElementById('contentArea');
+        area.innerHTML = `<h1>Geography: Merlot Science Virtual Lab</h1><div class="sim-container"><iframe src="https://virtuallabs.merlot.org/vl_ee_science.html"></iframe></div>`;
+    }
+
+    function initPhysics() {
+        const area = document.getElementById('contentArea');
+        area.innerHTML = `<h1>Physics: Circuit Construction</h1><div class="sim-container"><iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html"></iframe></div>`;
+    }
+
+    function initMath() {
+        const area = document.getElementById('contentArea');
+        area.innerHTML = `<h1>Mathematics: GeoGebra</h1><div class="sim-container"><iframe src="https://www.geogebra.org/classic/geometry"></iframe></div>`;
+    }
+
+    function initPE() {
+        const area = document.getElementById('contentArea');
+        area.innerHTML = `<h1>Physical Exercise</h1><div class="video-box"><h3>10 Minute Full Body Workout</h3><iframe src="https://www.youtube.com/embed/ml6cT4AZdqI"></iframe></div><div class="video-box"><h3>Morning Stretch Routine</h3><iframe src="https://www.youtube.com/embed/gC_L9qAHVJ8"></iframe></div>`;
+    }
+
+    function loadFunZone() {
+        gameBoard = ["","","","","","","","",""];
+        const area = document.getElementById('contentArea');
+        area.innerHTML = `<div class="game-container"><h2>FUN ZONE</h2><div id="game-status">Searching for students... <br> <span id="countdown" style="font-size: 2rem; color: #ffcc00;">5</span>s</div><div id="game-options" style="display:none; margin-top:20px;"><p>No user online. Play against Pulse Bot?</p><button class="btn" onclick="startGame()">Yes</button></div><div class="ttt-grid" id="grid">${["","","","","","","","",""].map((_, i) => `<div class="cell" onclick="makeMove(${i})"></div>`).join('')}</div><div id="winner-reveal" style="margin-top:15px; font-weight:bold;"></div></div>`;
+        let timeLeft = 5;
+        let timer = setInterval(() => {
+            timeLeft--;
+            if(document.getElementById('countdown')) document.getElementById('countdown').innerText = timeLeft;
+            if(timeLeft <= 0) {
+                clearInterval(timer);
+                document.getElementById('game-status').style.display = 'none';
+                document.getElementById('game-options').style.display = 'block';
+            }
+        }, 1000);
+    }
+
+    function startGame() {
+        document.getElementById('game-options').style.display = 'none';
+        document.getElementById('grid').classList.add('active');
+        document.getElementById('winner-reveal').innerText = "Vs: Pulse Bot";
+    }
+
+    function makeMove(i) {
+        if(!document.getElementById('grid').classList.contains('active') || gameBoard[i] !== "") return;
+        gameBoard[i] = "X"; document.querySelectorAll('.cell')[i].innerText = "X";
+        if(!checkWinner()) setTimeout(botMove, 500);
+    }
+
+    function botMove() {
+        let av = gameBoard.map((v, i) => v === "" ? i : null).filter(v => v !== null);
+        if(av.length > 0) {
+            let m = av[Math.floor(Math.random() * av.length)];
+            gameBoard[m] = "O"; document.querySelectorAll('.cell')[m].innerText = "O"; checkWinner();
+        }
+    }
+
+    function checkWinner() {
+        const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+        for(let c of w) {
+            if(gameBoard[c[0]] && gameBoard[c[0]] === gameBoard[c[1]] && gameBoard[c[0]] === gameBoard[c[2]]) {
+                alert(gameBoard[c[0]] + " Wins!"); loadFunZone(); return true;
+            }
+        }
+        if(!gameBoard.includes("")) { alert("Draw!"); loadFunZone(); return true; }
+        return false;
+    }
+
+    function toggleChat() { document.getElementById('chat-widget').classList.toggle('minimized'); }
+
+    // PulseBot Automated Responses
+    function sendChat() {
+        const l = document.getElementById('chat-logs'); 
+        const i = document.getElementById('chatIn');
+        const userText = i.value.toLowerCase();
+        if(!i.value) return; 
+
+        l.innerHTML += `<div><b>You:</b> ${i.value}</div>`; 
+        i.value = ""; 
+        l.scrollTop = l.scrollHeight;
+
+        setTimeout(() => {
+            let reply = "That's interesting! Would you like to explore one of our simulations to learn more?";
+            if(userText.includes("hello") || userText.includes("hi")) reply = "Hello! I am PulseBot. How can I assist your learning today?";
+            else if(userText.includes("chemistry")) reply = "Chemistry is great! Check out the 'Molecule Shapes' simulation in the sidebar.";
+            else if(userText.includes("biology")) reply = "In Biology, we have a Natural Selection simulation. Check it out!";
+            else if(userText.includes("physics")) reply = "Physics is all about energy. You can build circuits in our Physics module!";
+            else if(userText.includes("math") || userText.includes("mathematics")) reply = "Need help with geometry? Open the GeoGebra module!";
+            else if(userText.includes("game") || userText.includes("fun")) reply = "You can play Tic-Tac-Toe against me in the FUN ZONE!";
+            
+            l.innerHTML += `<div><b>Bot:</b> ${reply}</div>`;
+            l.scrollTop = l.scrollHeight;
+        }, 1000);
+    }
+</script>
+ 
+</body>
+</html>
