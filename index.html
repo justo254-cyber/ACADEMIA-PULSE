@@ -127,14 +127,14 @@
         <div class="sidebar">
             <h2 style="color:#ffcc00; text-align:center; margin-bottom:20px;">PULSE</h2>
             <div class="subject-list">
-                <div class="subject" onclick="loadSubject('Chemistry')">?? Chemistry (Interactive)</div>
-                <div class="subject" onclick="loadSubject('Biology')">?? Biology (Simulated)</div>
-                <div class="subject" onclick="loadSubject('Geography')">?? Geography (Merlot)</div>
-                <div class="subject" onclick="loadSubject('Physics')">? Physics (Circuits)</div>
-                <div class="subject" onclick="loadSubject('Mathematics')">?? Mathematics (GeoGebra)</div>
-                <div class="subject" onclick="loadSubject('PE')">?? Physical Exercise</div>
+                <div class="subject" onclick="loadSubject('Chemistry')">🧪 Chemistry (Interactive)</div>
+                <div class="subject" onclick="loadSubject('Biology')">🌿 Biology (Simulated)</div>
+                <div class="subject" onclick="loadSubject('Geography')">🌍 Geography (Merlot)</div>
+                <div class="subject" onclick="loadSubject('Physics')">⚡ Physics (Circuits)</div>
+                <div class="subject" onclick="loadSubject('Mathematics')">📐 Mathematics (GeoGebra)</div>
+                <div class="subject" onclick="loadSubject('PE')">🏃 Physical Exercise</div>
             </div>
-            <div class="fun-zone-btn" onclick="loadFunZone()">?? FUN ZONE</div>
+            <div class="fun-zone-btn" onclick="loadFunZone()">🎮 FUN ZONE</div>
         </div>
  
         <div class="content" id="contentArea">
@@ -206,12 +206,12 @@
 
     function initChemistry() {
         const area = document.getElementById('contentArea');
-        area.innerHTML = `<h1>Chemistry: Molecule Shapes Interactive</h1><div class="sim-container"><iframe src="https://phet.colorado.edu/sims/html/molecule-shapes/latest/molecule-shapes_en.html"></iframe></div>`;
+        area.innerHTML = `<h1>Chemistry: Interactive Lab Resources</h1><div class="sim-container"><iframe src="https://chemistry-en.nobook.com/console/templates/resource"></iframe></div>`;
     }
 
     function initBiology() {
         const area = document.getElementById('contentArea');
-        area.innerHTML = `<h1>Biology: Natural Selection Simulation</h1><div class="sim-container"><iframe src="https://phet.colorado.edu/sims/html/natural-selection/latest/natural-selection_en.html"></iframe></div><div class="math-card" style="margin-top:20px;"><h3>Adaptation of a Tree</h3><p>Trees adapt through specialized root systems and waxy leaf coatings.</p></div>`;
+        area.innerHTML = `<h1>Biology: Concord NextGen Virtual Labs</h1><div class="sim-container"><iframe src="https://mw.concord.org/nextgen/"></iframe></div>`;
     }
 
     function initGeography() {
@@ -297,8 +297,8 @@
         setTimeout(() => {
             let reply = "That's interesting! Would you like to explore one of our simulations to learn more?";
             if(userText.includes("hello") || userText.includes("hi")) reply = "Hello! I am PulseBot. How can I assist your learning today?";
-            else if(userText.includes("chemistry")) reply = "Chemistry is great! Check out the 'Molecule Shapes' simulation in the sidebar.";
-            else if(userText.includes("biology")) reply = "In Biology, we have a Natural Selection simulation. Check it out!";
+            else if(userText.includes("chemistry")) reply = "Chemistry is great! Check out our new interactive lab in the sidebar.";
+            else if(userText.includes("biology")) reply = "Biology is the study of life. Check out the Concord NextGen simulations!";
             else if(userText.includes("physics")) reply = "Physics is all about energy. You can build circuits in our Physics module!";
             else if(userText.includes("math") || userText.includes("mathematics")) reply = "Need help with geometry? Open the GeoGebra module!";
             else if(userText.includes("game") || userText.includes("fun")) reply = "You can play Tic-Tac-Toe against me in the FUN ZONE!";
@@ -311,4 +311,3 @@
  
 </body>
 </html>
-
