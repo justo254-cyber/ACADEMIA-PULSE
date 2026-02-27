@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACADEMIA PULSE - National Edition</title>
+    <title>ACADEMIA PULSE - Full Suite 2026</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
@@ -14,257 +14,259 @@
             --accent: #ffcc00;
             --glass-bg: rgba(255, 255, 255, 0.15);
             --glass-border: rgba(255, 255, 255, 0.2);
-            --sidebar-glass: rgba(27, 38, 59, 0.9);
+            --sidebar-glass: rgba(27, 38, 59, 0.95);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-        body { background-color: #0d1b2a; color: white; min-height: 100vh; overflow-x: hidden; }
+        body { background-color: #0d1b2a; color: white; min-height: 100vh; overflow: hidden; }
         #vanta-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
         
-        .page { display: none; min-height: 100vh; width: 100%; position: relative; z-index: 2; flex-direction: column; }
+        .page { display: none; height: 100vh; width: 100%; position: relative; z-index: 2; flex-direction: column; }
         .centered-page { justify-content: center; align-items: center; text-align: center; padding: 20px; }
         
         .back-btn { 
             position: absolute; top: 20px; left: 20px; 
-            background: var(--accent); color: #000; padding: 8px 15px; 
+            background: var(--accent); color: #000; padding: 10px 20px; 
             border-radius: 50px; font-weight: bold; cursor: pointer; border: none;
             display: flex; align-items: center; gap: 8px; font-size: 0.9rem; z-index: 100;
         }
 
-        /* GLOBAL CHAT */
-        #roblox-chat { position: fixed; top: 10px; right: 10px; width: 280px; height: 180px; background: rgba(0,0,0,0.85); border: 1px solid var(--accent); border-radius: 5px; z-index: 3000; display: none; flex-direction: column; }
-        #roblox-chat.minimized { height: 35px; overflow: hidden; }
-        #global-chat-header { padding: 5px 10px; background: var(--accent); color: black; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; font-size: 0.8rem; }
-        #chat-display { flex: 1; overflow-y: auto; font-size: 0.8rem; padding: 5px; }
-        #chat-input-roblox { background: rgba(255,255,255,0.1); border: 1px solid #444; color: white; padding: 5px; margin: 3px; border-radius: 3px; }
+        /* GLOBAL CHAT (TOP RIGHT) */
+        #global-chat-box { position: fixed; top: 15px; right: 15px; width: 280px; height: 200px; background: rgba(0,0,0,0.85); border: 1px solid var(--accent); border-radius: 8px; z-index: 4000; display: none; flex-direction: column; }
+        #global-chat-box.minimized { height: 35px; overflow: hidden; }
+        #chat-header-global { padding: 8px 12px; background: var(--accent); color: #000; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; font-size: 0.8rem; }
+        #chat-feed { flex: 1; overflow-y: auto; font-size: 0.75rem; padding: 8px; color: #eee; }
+        #chat-input-global { background: rgba(255,255,255,0.1); border: none; border-top: 1px solid #444; color: white; padding: 8px; outline: none; }
 
-        .auth-card { background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 35px; border-radius: 20px; width: 100%; max-width: 420px; }
-        .auth-card input, .auth-card select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid var(--glass-border); border-radius: 8px; background: rgba(255,255,255,0.1); color: white; }
+        /* AUTH CARDS */
+        .auth-card { background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 30px; border-radius: 20px; width: 100%; max-width: 450px; }
+        .auth-card input, .auth-card select { width: 100%; padding: 10px; margin: 6px 0; border: 1px solid var(--glass-border); border-radius: 8px; background: rgba(255,255,255,0.1); color: white; outline: none;}
 
-        #dashboard { background: linear-gradient(rgba(13, 27, 42, 0.9), rgba(13, 27, 42, 0.9)), url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=2070'); background-size: cover; background-position: center; background-attachment: fixed; }
+        /* DASHBOARD LAYOUT */
+        #dashboard { display: none; height: 100vh; overflow: hidden; }
+        .dashboard-wrapper { display: flex; height: 100%; width: 100%; }
 
-        .sidebar { width: 260px; background: var(--sidebar-glass); backdrop-filter: blur(15px); padding: 20px; border-right: 1px solid var(--glass-border); height: 100vh; position: sticky; top: 0; z-index: 10; }
-        .subject { background: rgba(255,255,255,0.05); padding: 14px; margin: 8px 0; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
+        .sidebar { width: 260px; background: var(--sidebar-glass); backdrop-filter: blur(15px); padding: 20px; border-right: 1px solid var(--glass-border); height: 100vh; display: flex; flex-direction: column; flex-shrink: 0; }
+        .subject { background: rgba(255,255,255,0.05); padding: 12px; margin: 6px 0; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
         .subject:hover { background: var(--accent); color: black; font-weight: bold; }
 
-        .content { flex: 1; padding: 25px; position: relative; z-index: 100; min-height: 100vh; overflow-y: auto; }
-        .sim-container { width: 100%; height: 80vh; border-radius: 15px; border: 3px solid var(--accent); background: white; margin-top: 15px; overflow: hidden; }
+        .content { flex: 1; padding: 20px; overflow-y: auto; height: 100vh; position: relative; }
+        .sim-container { width: 100%; height: calc(100vh - 160px); border-radius: 15px; border: 3px solid var(--accent); background: white; margin-top: 10px; overflow: hidden; }
         .sim-container iframe { width: 100%; height: 100%; border: none; }
         
-        .fun-zone-container { background: rgba(0,0,0,0.9); border-radius: 20px; padding: 40px; border: 2px solid var(--accent); text-align: center; }
-        .ttt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-width: 300px; margin: 25px auto; opacity: 0.1; pointer-events: none; }
-        .ttt-grid.active { opacity: 1; pointer-events: auto; }
-        .cell { height: 90px; background: rgba(255,255,255,0.1); border: 2px solid var(--accent); border-radius: 10px; font-size: 2.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        /* PULSEBOT */
+        #pulsebot-widget { position: fixed; bottom: 0; right: 20px; width: 300px; background: white; border-radius: 10px 10px 0 0; z-index: 2000; transition: 0.3s; color: #333; border: 1px solid #ccc; }
+        #pulsebot-widget.minimized { transform: translateY(calc(100% - 40px)); }
+        #bot-header { background: #1b263b; color: var(--accent); padding: 10px; cursor: pointer; display: flex; justify-content: space-between; font-weight: bold; }
+        #bot-logs { height: 160px; overflow-y: auto; padding: 10px; font-size: 0.8rem; }
 
-        #chat-widget { position: fixed; bottom: 0; right: 20px; width: 300px; background: white; border-radius: 10px 10px 0 0; z-index: 2000; transition: 0.3s; color: #333; }
-        #chat-widget.minimized { transform: translateY(calc(100% - 40px)); }
-        #chat-header { background: #1b263b; color: var(--accent); padding: 10px; cursor: pointer; display: flex; justify-content: space-between; font-weight: bold; }
+        /* CERTIFICATE */
+        #cert-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index: 5000; justify-content:center; align-items:center; }
+        .certificate { width:700px; background:#fff; padding:50px; border: 15px solid #1b263b; outline: 4px solid var(--accent); color:#1b263b; text-align:center; position:relative; }
+        .cert-name { font-size: 2.5rem; font-family: 'Brush Script MT', cursive; color: #b8860b; border-bottom: 2px solid #ddd; display: inline-block; margin: 15px 0; }
 
         .btn { padding: 12px 25px; border: none; border-radius: 20px; background: var(--accent); font-weight: bold; cursor: pointer; margin: 5px; transition: 0.3s; }
-        .btn:hover { box-shadow: 0 0 15px var(--accent); }
-        footer { background: rgba(13, 27, 42, 0.98); padding: 30px; text-align: center; border-top: 3px solid var(--accent); }
-        
-        /* Abstract Styles */
-        .abstract-box { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin-top: 20px; border-left: 5px solid var(--accent); }
-        textarea { width: 100%; height: 150px; background: rgba(0,0,0,0.2); color: white; border: 1px solid var(--glass-border); border-radius: 10px; padding: 10px; margin-top: 10px; outline: none; }
+
+        /* FUN ZONE */
+        .fun-zone-container { 
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=2070'); 
+            background-size: cover; border-radius: 20px; padding: 30px; border: 2px solid var(--accent); text-align: center; height: 100%;
+        }
+        .ttt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 300px; margin: 20px auto; }
+        .cell { height: 80px; background: rgba(255,255,255,0.1); border: 2px solid var(--accent); border-radius: 10px; font-size: 2.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; }
     </style>
 </head>
 <body>
  
 <div id="vanta-canvas"></div>
 
-<div id="roblox-chat">
-    <div id="global-chat-header" onclick="toggleGlobalChat()"><span>GLOBAL CHAT</span><span>_</span></div>
-    <div id="chat-display"></div>
-    <input type="text" id="chat-input-roblox" placeholder="Press Enter to chat...">
+<div id="global-chat-box">
+    <div id="chat-header-global" onclick="document.getElementById('global-chat-box').classList.toggle('minimized')">
+        <span>COMMUNITY FEED</span><i class="fas fa-users"></i>
+    </div>
+    <div id="chat-feed">
+        <div><span style="color:var(--accent)">[Admin]:</span> Welcome to the Congress 2026. Join the discussion!</div>
+    </div>
+    <input type="text" id="chat-input-global" placeholder="Message scholars...">
+</div>
+
+<div id="cert-overlay" onclick="this.style.display='none'">
+    <div class="certificate" onclick="event.stopPropagation()">
+        <h2>OFFICIAL RECOGNITION</h2>
+        <p>Kenya Science & Technology Congress 2026</p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Seal_of_Kenya.svg" width="70" style="margin:15px;">
+        <p>This award is conferred upon</p>
+        <div class="cert-name" id="cert-user-name">STUDENT NAME</div>
+        <p>from <b><span id="cert-school-name">SCHOOL</span></b></p>
+        <p style="margin-top:20px; font-size:0.85rem;">For mastery of virtual research modules and innovation excellence.</p>
+        <button class="btn" onclick="window.print()" style="margin-top:20px;">Download Certificate</button>
+    </div>
 </div>
 
 <div id="intro" class="page centered-page" style="display:flex;">
-    <h1 style="font-size: 3.5rem; letter-spacing: 5px;">ACADEMIA PULSE</h1>
-    <p style="margin-bottom: 20px; opacity: 0.8;">Virtual Science Innovation Hub for the Kenyan Student.</p>
-    <button class="btn" onclick="showPage('auth-choice')">Enter Academy</button>
+    <h1 style="font-size: 3.5rem;">ACADEMIA PULSE</h1>
+    <p>Virtual Innovation Portal | Kenya Science Congress</p>
+    <button class="btn" onclick="showPage('auth-choice')">Enter Portal</button>
 </div>
- 
+
 <div id="auth-choice" class="page centered-page">
-    <button class="back-btn" onclick="showPage('intro')"><i class="fas fa-arrow-left"></i> Home</button>
-    <h2>Portal Access</h2>
-    <button class="btn" onclick="showPage('signup-page')">Sign Up</button>
-    <button class="btn" style="background:transparent; border:1px solid #ffcc00; color:white;" onclick="showPage('signin-page')">Sign In</button>
+    <button class="back-btn" onclick="showPage('intro')"><i class="fas fa-arrow-left"></i> Back</button>
+    <div class="auth-card">
+        <h2>Student Access</h2>
+        <button class="btn" style="width:90%" onclick="showPage('signup-page')">Sign Up</button>
+        <button class="btn" style="width:90%; background:none; border:1px solid #ffcc00; color:white;" onclick="showPage('signin-page')">Login</button>
+    </div>
 </div>
 
 <div id="signup-page" class="page centered-page">
     <button class="back-btn" onclick="showPage('auth-choice')"><i class="fas fa-arrow-left"></i> Back</button>
     <div class="auth-card">
-        <h3>Create Account</h3>
+        <h3>New Registration</h3>
         <input type="text" id="su-name" placeholder="Full Name">
         <input type="text" id="su-school" placeholder="School Name">
-        <select id="su-system">
-            <option value="" disabled selected>Learning System</option>
-            <option value="844">8-4-4 System</option>
-            <option value="CBC">CBC System</option>
-        </select>
+        <select id="su-sys"><option disabled selected>Learning System</option><option>CBC System</option><option>8-4-4 System</option></select>
         <input type="text" id="su-county" placeholder="County">
-        <input type="text" id="su-contact" placeholder="Email or Phone Number">
-        <input type="password" id="su-pass" placeholder="Password">
-        <button class="btn" style="width:100%" onclick="handleSignUp()">Sign Up</button>
+        <input type="text" id="su-contact" placeholder="Email or Phone">
+        <input type="password" id="su-pass" placeholder="Create Password">
+        <button class="btn" style="width:100%" onclick="handleAuth()">Register Scholar</button>
     </div>
 </div>
- 
+
 <div id="signin-page" class="page centered-page">
     <button class="back-btn" onclick="showPage('auth-choice')"><i class="fas fa-arrow-left"></i> Back</button>
-    <div class="auth-card">
-        <h3>Login</h3>
-        <input type="text" id="si-user" placeholder="Username / Contact">
-        <input type="password" placeholder="Password">
-        <button class="btn" style="width:100%" onclick="handleSignIn()">Login</button>
-    </div>
+    <div class="auth-card"><h3>Login</h3><input type="text" placeholder="Contact"><input type="password" placeholder="Password"><button class="btn" style="width:100%" onclick="handleAuth()">Enter Hub</button></div>
 </div>
- 
+
 <div id="dashboard" class="page">
-    <div style="display: flex;">
+    <div class="dashboard-wrapper">
         <div class="sidebar">
-            <h2 style="color:#ffcc00; text-align:center; margin-bottom:20px;">PULSE</h2>
-            <div class="subject" onclick="loadSubject('Chemistry')">?? Chemistry Lab</div>
-            <div class="subject" onclick="loadSubject('Biology')">?? Biology Sim</div>
-            <div class="subject" onclick="loadSubject('Geography')">?? Geography</div>
-            <div class="subject" onclick="loadSubject('Physics')">? Physics Circuits</div>
-            <div class="subject" onclick="loadSubject('Mathematics')">?? Mathematics</div>
-            <div class="subject" onclick="loadSubject('PE')">?? PE & Health</div>
-            <div class="btn" style="text-align:center; background: #2c3e50; margin-top:20px; width:100%;" onclick="loadAbstractPortal()">?? Project Abstract</div>
-            <div class="btn" style="text-align:center; background: #ff4444; margin-top:10px; width:100%;" onclick="loadFunZone()">?? FUN ZONE</div>
+            <h2 style="color:var(--accent); text-align:center;">PULSE</h2>
+            <div style="font-size:0.7rem; color:#00ff00; margin:10px 0; text-align:center;"><i class="fas fa-check-circle"></i> National Sync Active</div>
+            <div style="flex:1;">
+                <div class="subject" onclick="loadSubject('Mathematics')">📐 Mathematics Lab</div>
+                <div class="subject" onclick="loadSubject('Chemistry')">🧪 Chemistry Lab</div>
+                <div class="subject" onclick="loadSubject('Biology')">🌿 Biology Sim</div>
+                <div class="subject" onclick="loadSubject('Physics')">⚡ Physics Circuits</div>
+                <div class="subject" onclick="loadSubject('Geography')">🌍 Geography Hub</div>
+                <div class="subject" onclick="loadSubject('PE')">🏃 Physical Exercise</div>
+            </div>
+            <button class="btn" style="background:#2c3e50; font-size:0.8rem;" onclick="loadAbstractPortal()">📁 Project Abstract</button>
+            <button class="btn" style="background:#d4af37; color:black;" onclick="generateCertificate()">Certificate</button>
+            <button class="btn" style="background:#ff4444;" onclick="loadFunZone()">🎮 FUN ZONE</button>
         </div>
- 
         <div class="content" id="contentArea">
             <h1 id="welcome-msg">WELCOME</h1>
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px;">
-                <div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:15px; text-align:center;"><h4>Lessons Finished</h4><p style="font-size:2rem; font-weight:bold;">12</p></div>
-                <div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:15px; text-align:center;"><h4>National Rank</h4><p style="font-size:2rem; font-weight:bold;">#42</p></div>
-                <div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:15px; text-align:center;"><h4>Avg. Score</h4><p style="font-size:2rem; font-weight:bold;">88%</p></div>
-            </div>
-            
-            <div class="abstract-box">
-                <h3>Kenya Science Congress Quick Info</h3>
-                <p>The 2026 Congress theme focuses on <i>"Sustainable Technology for Climate Resilience."</i></p>
-                <ul style="margin: 10px 20px; font-size: 0.9rem;">
-                    <li>Ensure your simulation data is recorded.</li>
-                    <li>Link your project to a local Kenyan challenge.</li>
-                    <li>Collaborate via the Global Chat.</li>
-                </ul>
+                <div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:15px; text-align:center;"><h5>County</h5><p id="dash-county">Kenya</p></div>
+                <div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:15px; text-align:center;"><h5>Status</h5><p>Active</p></div>
+                <div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:15px; text-align:center;"><h5>Year</h5><p>2026</p></div>
             </div>
         </div>
     </div>
 
-    <div id="chat-widget">
-        <div id="chat-header" onclick="toggleChat()"><span>PulseBot AI</span><span>_</span></div>
-        <div id="chat-logs"><div><b>Bot:</b> Ready to help! Mention a subject like "Physics" to start.</div></div>
-        <div style="display:flex; border-top:1px solid #ddd;"><input type="text" id="chatIn" style="flex:1; border:none; padding:10px;"><button onclick="sendChat()" style="background:var(--accent); border:none; padding:10px; font-weight:bold;">Send</button></div>
+    <div id="pulsebot-widget">
+        <div id="bot-header" onclick="document.getElementById('pulsebot-widget').classList.toggle('minimized')">
+            <span>PulseBot AI</span><i class="fas fa-robot"></i>
+        </div>
+        <div id="bot-logs"><div><b>Bot:</b> Ready to assist with your Science Congress research!</div></div>
+        <div style="display:flex;"><input type="text" id="botIn" style="flex:1; padding:8px; border:none;"><button onclick="sendBotChat()" style="background:var(--accent); border:none; padding:8px;">Send</button></div>
     </div>
- 
-    <footer>
-        <p>Official Project for <strong>Kenya Science Congress 2026</strong></p>
-        <p>Lead Developers: <strong>Justus and Mark</strong></p>
-        <a href="https://wa.me/254715286771" style="color:#25d366; text-decoration:none; font-weight:bold;" target="_blank">
-            <i class="fab fa-whatsapp"></i> WhatsApp: 0715286771
-        </a>
-    </footer>
 </div>
- 
+
 <script>
-    let vantaEffect = VANTA.NET({ el: "#vanta-canvas", color: 0xffcc00, backgroundColor: 0x0d1b2a, points: 10.0 });
-    let globalUsername = "Scholar";
+    VANTA.NET({ el: "#vanta-canvas", color: 0xffcc00, backgroundColor: 0x0d1b2a });
+    let globalUser = { name: "Scholar", school: "Academy", county: "Kenya" };
     let gameBoard = ["","","","","","","","",""];
-
-    function toggleGlobalChat() { document.getElementById('roblox-chat').classList.toggle('minimized'); }
-    function toggleChat() { document.getElementById('chat-widget').classList.toggle('minimized'); }
-
-    document.getElementById('chat-input-roblox').addEventListener('keypress', function(e){
-        if(e.key==='Enter' && this.value){
-            document.getElementById('chat-display').innerHTML += `<div><b>[${globalUsername}]:</b> ${this.value}</div>`;
-            this.value = "";
-        }
-    });
 
     function showPage(id) {
         document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
         document.getElementById(id).style.display = (id === 'dashboard') ? 'block' : 'flex';
-        if(id === 'dashboard') document.getElementById('roblox-chat').style.display = 'flex';
+        if(id === 'dashboard') document.getElementById('global-chat-box').style.display = 'flex';
     }
 
-    function handleSignUp() { globalUsername = document.getElementById('su-name').value || "Scholar"; document.getElementById('welcome-msg').innerText = "WELCOME, " + globalUsername.toUpperCase(); showPage('dashboard'); }
-    function handleSignIn() { globalUsername = document.getElementById('si-user').value || "Scholar"; document.getElementById('welcome-msg').innerText = "WELCOME, " + globalUsername.toUpperCase(); showPage('dashboard'); }
+    function handleAuth() {
+        globalUser.name = document.getElementById('su-name').value || "Scholar";
+        globalUser.school = document.getElementById('su-school').value || "School";
+        globalUser.county = document.getElementById('su-county').value || "Kenya";
+        document.getElementById('welcome-msg').innerText = "WELCOME, " + globalUser.name.toUpperCase();
+        document.getElementById('dash-county').innerText = globalUser.county;
+        showPage('dashboard');
+    }
+
+    document.getElementById('chat-input-global').addEventListener('keypress', function(e){
+        if(e.key === 'Enter' && this.value) {
+            document.getElementById('chat-feed').innerHTML += `<div><span style="color:var(--accent);">[${globalUser.name}]:</span> ${this.value}</div>`;
+            document.getElementById('chat-feed').scrollTop = 999;
+            this.value = "";
+        }
+    });
 
     function loadSubject(name) {
         const area = document.getElementById('contentArea');
-        area.innerHTML = `<h1>${name} Lab</h1> <button class="btn" style="float:right;" onclick="location.reload()">Back to Stats</button>`; 
+        let links = {
+            'Mathematics': 'https://www.geogebra.org/classic',
+            'Chemistry': 'https://chemistry-en.nobook.com/console/templates/resource',
+            'Biology': 'https://mw.concord.org/nextgen/',
+            'Physics': 'https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html',
+            'Geography': 'https://virtuallabs.merlot.org/vl_ee_science.html'
+        };
+        
         if(name === 'PE') {
-            area.innerHTML += `<div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:20px;">
-                <iframe width="100%" height="350" src="https://www.youtube.com/embed/ml6cT4AZdqI" frameborder="0" allowfullscreen></iframe>
-                <iframe width="100%" height="350" src="https://www.youtube.com/embed/gC_L9qAHVJ8" frameborder="0" allowfullscreen></iframe>
+            area.innerHTML = `<h3>Physical Exercise Hub</h3>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:15px;">
+                <iframe width="100%" height="300" src="https://www.youtube.com/embed/ml6cT4AZdqI" style="border-radius:15px; border:2px solid #ffcc00;" allowfullscreen></iframe>
+                <div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:15px;"><h4>Health Log</h4><input type="number" placeholder="BPM" style="padding:10px; width:100%;"><button class="btn" style="width:100%; margin-top:10px;" onclick="alert('Data Saved')">Log Pulse</button></div>
             </div>`;
         } else {
-            let links = {'Chemistry':'https://chemistry-en.nobook.com/console/templates/resource', 'Biology':'https://mw.concord.org/nextgen/', 'Geography':'https://virtuallabs.merlot.org/vl_ee_science.html', 'Physics':'https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html', 'Mathematics':'https://www.geogebra.org/classic/geometry'};
-            area.innerHTML += `<div class="sim-container"><iframe src="${links[name]}"></iframe></div>`;
+            area.innerHTML = `<h3>${name} Virtual Simulation</h3><div class="sim-container"><iframe src="${links[name]}"></iframe></div>`;
         }
     }
 
-    function loadAbstractPortal() {
-        const area = document.getElementById('contentArea');
-        area.innerHTML = `
-            <h1>Project Abstract Portal</h1>
-            <div class="abstract-box">
-                <p>Submit your 2026 Science Congress proposal below.</p>
-                <input type="text" id="abstract-title" placeholder="Project Title" style="width:100%; padding:10px; margin-top:10px; background:rgba(0,0,0,0.3); color:white; border:1px solid #ffcc00; border-radius:5px;">
-                <textarea id="abstract-text" placeholder="Describe your project, methodology, and expected results..."></textarea>
-                <button class="btn" onclick="alert('Abstract Saved for Review!')">Save Abstract</button>
-            </div>`;
+    function sendBotChat() {
+        const i = document.getElementById('botIn'); if(!i.value) return;
+        document.getElementById('bot-logs').innerHTML += `<div><b>You:</b> ${i.value}</div>`;
+        setTimeout(() => { document.getElementById('bot-logs').innerHTML += `<div><b>Bot:</b> Remember to include your control variables in your methodology!</div>`; }, 800);
+        i.value = "";
+    }
+
+    function generateCertificate() {
+        document.getElementById('cert-user-name').innerText = globalUser.name;
+        document.getElementById('cert-school-name').innerText = globalUser.school;
+        document.getElementById('cert-overlay').style.display = 'flex';
     }
 
     function loadFunZone() {
         gameBoard = ["","","","","","","","",""];
         const area = document.getElementById('contentArea');
-        area.innerHTML = `<div class="fun-zone-container"><h2>BATTLE ARENA</h2><div id="game-status"><p>Scanning players...</p><span id="countdown" style="font-size:3rem; color:var(--accent)">10</span></div>
-            <div id="game-prompt" style="display:none;"><p>No players found. Play Academia Pulse Bot?</p><button class="btn" onclick="startGame()">CHALLENGE BOT</button></div>
-            <div class="ttt-grid" id="grid">${["","","","","","","","",""].map((_, i) => `<div class="cell" id="c${i}" onclick="makeMove(${i})"></div>`).join('')}</div><h2 id="game-result"></h2></div>`;
-        let timeLeft = 10;
-        let timer = setInterval(() => { timeLeft--; document.getElementById('countdown').innerText = timeLeft; if(timeLeft <= 0){ clearInterval(timer); document.getElementById('game-status').style.display='none'; document.getElementById('game-prompt').style.display='block'; }}, 1000);
+        area.innerHTML = `<div class="fun-zone-container"><h2 style="color:var(--accent)">BATTLE ARENA</h2><div id="game-status"><p>Looking for competitors...</p><span id="count">5</span></div>
+            <div id="prompt" style="display:none;"><button class="btn" onclick="document.getElementById('prompt').style.display='none'; document.getElementById('grid').style.display='grid';">Battle PulseBot</button></div>
+            <div class="ttt-grid" id="grid" style="display:none;">${["","","","","","","","",""].map((_, i) => `<div class="cell" id="c${i}" onclick="makeMove(${i})"></div>`).join('')}</div>
+            <h2 id="res" style="color:var(--accent); margin-top:10px;"></h2></div>`;
+        let left = 5; let t = setInterval(() => { left--; document.getElementById('count').innerText = left; if(left <= 0){ clearInterval(t); document.getElementById('game-status').style.display='none'; document.getElementById('prompt').style.display='block'; }}, 1000);
     }
 
-    function startGame() { document.getElementById('game-prompt').style.display='none'; document.getElementById('grid').classList.add('active'); }
     function makeMove(i) {
-        if(gameBoard[i] !== "" || !document.getElementById('grid').classList.contains('active')) return;
+        if(gameBoard[i] !== "" || document.getElementById('res').innerText !== "") return;
         gameBoard[i] = "X"; document.getElementById('c'+i).innerText = "X";
-        if(!checkWinner()) setTimeout(botMove, 600);
+        if(checkWin("X")) return;
+        setTimeout(() => { 
+            let av = gameBoard.map((v, i) => v === "" ? i : null).filter(v => v !== null); 
+            if(av.length > 0){ let m = av[Math.floor(Math.random()*av.length)]; gameBoard[m] = "O"; document.getElementById('c'+m).innerText = "O"; checkWin("O"); }
+        }, 500);
     }
-    function botMove() {
-        let av = gameBoard.map((v, i) => v === "" ? i : null).filter(v => v !== null);
-        if(av.length > 0) { let m = av[Math.floor(Math.random() * av.length)]; gameBoard[m] = "O"; document.getElementById('c'+m).innerText = "O"; checkWinner(); }
-    }
-    function checkWinner() {
-        const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-        for(let c of w) { if(gameBoard[c[0]] && gameBoard[c[0]] === gameBoard[c[1]] && gameBoard[c[0]] === gameBoard[c[2]]) {
-            document.getElementById('game-result').innerHTML = gameBoard[c[0]] === "X" ? `<span style="color:#00ff00">CONGRATS ${globalUsername.toUpperCase()}! YOU WIN!</span>` : `<span style="color:#ff4444">YOU LOSE! TRY AGAIN</span>`;
-            document.getElementById('grid').classList.remove('active'); return true;
-        }}
-        if(!gameBoard.includes("")) { document.getElementById('game-result').innerText = "DRAW!"; return true; }
+
+    function checkWin(p) {
+        const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+        for(let w of wins) { if(gameBoard[w[0]] === p && gameBoard[w[1]] === p && gameBoard[w[2]] === p) { document.getElementById('res').innerText = p === "X" ? "YOU WIN!" : "BOT WINS!"; return true; }}
+        if(!gameBoard.includes("")) { document.getElementById('res').innerText = "DRAW!"; return true; }
         return false;
     }
 
-    function sendChat() {
-        const i = document.getElementById('chatIn'); if(!i.value) return;
-        const log = document.getElementById('chat-logs');
-        log.innerHTML += `<div><b>You:</b> ${i.value}</div>`;
-        const input = i.value.toLowerCase();
-        setTimeout(() => {
-            let res = "I'm analyzing your request. Would you like to check the simulation lab?";
-            if(input.includes("physics")) res = "Physics circuits are quite popular. Make sure to calculate Ohm's Law correctly!";
-            if(input.includes("congress")) res = "The 2026 Science Congress is approaching. Focus on sustainability!";
-            log.innerHTML += `<div><b>Bot:</b> ${res}</div>`;
-            log.scrollTop = log.scrollHeight;
-        }, 1000);
-        i.value = "";
+    function loadAbstractPortal() {
+        document.getElementById('contentArea').innerHTML = `<h3>Research Abstract Portal</h3><textarea style="width:100%; height:200px; background:rgba(0,0,0,0.4); color:white; border:1px solid var(--accent); padding:10px;"></textarea><button class="btn">Submit Abstract</button>`;
     }
+
+    showPage('intro');
 </script>
- 
 </body>
 </html>
-
