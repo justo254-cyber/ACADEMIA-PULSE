@@ -14,7 +14,7 @@
             --accent: #ffcc00;
             --glass-bg: rgba(255, 255, 255, 0.15);
             --glass-border: rgba(255, 255, 255, 0.2);
-            --sidebar-glass: rgba(27, 38, 59, 0.85);
+            --sidebar-glass: rgba(27, 38, 59, 0.9);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
@@ -31,22 +31,19 @@
             display: flex; align-items: center; gap: 8px; font-size: 0.9rem; z-index: 100;
         }
 
-        /* GLOBAL CHAT (Top Right) */
-        #roblox-chat { position: fixed; top: 10px; right: 10px; width: 280px; height: 180px; background: rgba(0,0,0,0.85); border: 1px solid var(--accent); border-radius: 5px; z-index: 3000; display: none; flex-direction: column; transition: 0.3s; }
+        /* GLOBAL CHAT */
+        #roblox-chat { position: fixed; top: 10px; right: 10px; width: 280px; height: 180px; background: rgba(0,0,0,0.85); border: 1px solid var(--accent); border-radius: 5px; z-index: 3000; display: none; flex-direction: column; }
         #roblox-chat.minimized { height: 35px; overflow: hidden; }
         #global-chat-header { padding: 5px 10px; background: var(--accent); color: black; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; font-size: 0.8rem; }
-        #chat-display { flex: 1; overflow-y: auto; font-size: 0.8rem; padding: 5px; color: #fff; }
-        #chat-input-roblox { background: rgba(255,255,255,0.1); border: 1px solid #444; color: white; padding: 5px; margin: 3px; border-radius: 3px; outline: none; }
+        #chat-display { flex: 1; overflow-y: auto; font-size: 0.8rem; padding: 5px; }
+        #chat-input-roblox { background: rgba(255,255,255,0.1); border: 1px solid #444; color: white; padding: 5px; margin: 3px; border-radius: 3px; }
 
-        .auth-card { 
-            background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border);
-            color: white; padding: 35px; border-radius: 20px; width: 100%; max-width: 420px; 
-        }
+        .auth-card { background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 35px; border-radius: 20px; width: 100%; max-width: 420px; }
         .auth-card input, .auth-card select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid var(--glass-border); border-radius: 8px; background: rgba(255,255,255,0.1); color: white; }
 
-        #dashboard { background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=2070'); background-size: cover; background-position: center; background-attachment: fixed; }
+        #dashboard { background: linear-gradient(rgba(13, 27, 42, 0.9), rgba(13, 27, 42, 0.9)), url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=2070'); background-size: cover; background-position: center; background-attachment: fixed; }
 
-        .sidebar { width: 260px; background: var(--sidebar-glass); backdrop-filter: blur(10px); padding: 20px; border-right: 1px solid var(--glass-border); height: 100vh; position: sticky; top: 0; z-index: 10; }
+        .sidebar { width: 260px; background: var(--sidebar-glass); backdrop-filter: blur(15px); padding: 20px; border-right: 1px solid var(--glass-border); height: 100vh; position: sticky; top: 0; z-index: 10; }
         .subject { background: rgba(255,255,255,0.05); padding: 14px; margin: 8px 0; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
         .subject:hover { background: var(--accent); color: black; font-weight: bold; }
 
@@ -54,19 +51,22 @@
         .sim-container { width: 100%; height: 80vh; border-radius: 15px; border: 3px solid var(--accent); background: white; margin-top: 15px; overflow: hidden; }
         .sim-container iframe { width: 100%; height: 100%; border: none; }
         
-        .fun-zone-container { background: rgba(0,0,0,0.8); border-radius: 20px; padding: 40px; border: 2px solid var(--accent); text-align: center; }
+        .fun-zone-container { background: rgba(0,0,0,0.9); border-radius: 20px; padding: 40px; border: 2px solid var(--accent); text-align: center; }
         .ttt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-width: 300px; margin: 25px auto; opacity: 0.1; pointer-events: none; }
         .ttt-grid.active { opacity: 1; pointer-events: auto; }
         .cell { height: 90px; background: rgba(255,255,255,0.1); border: 2px solid var(--accent); border-radius: 10px; font-size: 2.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
-        /* PULSEBOT (Bottom Right) */
-        #chat-widget { position: fixed; bottom: 0; right: 20px; width: 300px; background: white; border-radius: 10px 10px 0 0; z-index: 2000; transition: 0.3s; border: 1px solid #ccc; color: #333; }
+        #chat-widget { position: fixed; bottom: 0; right: 20px; width: 300px; background: white; border-radius: 10px 10px 0 0; z-index: 2000; transition: 0.3s; color: #333; }
         #chat-widget.minimized { transform: translateY(calc(100% - 40px)); }
         #chat-header { background: #1b263b; color: var(--accent); padding: 10px; cursor: pointer; display: flex; justify-content: space-between; font-weight: bold; }
-        #chat-logs { height: 200px; overflow-y: auto; padding: 10px; font-size: 0.85rem; }
 
-        .btn { padding: 12px 25px; border: none; border-radius: 20px; background: var(--accent); font-weight: bold; cursor: pointer; margin: 5px; }
-        footer { background: rgba(13, 27, 42, 0.95); padding: 30px; text-align: center; border-top: 3px solid var(--accent); }
+        .btn { padding: 12px 25px; border: none; border-radius: 20px; background: var(--accent); font-weight: bold; cursor: pointer; margin: 5px; transition: 0.3s; }
+        .btn:hover { box-shadow: 0 0 15px var(--accent); }
+        footer { background: rgba(13, 27, 42, 0.98); padding: 30px; text-align: center; border-top: 3px solid var(--accent); }
+        
+        /* Abstract Styles */
+        .abstract-box { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin-top: 20px; border-left: 5px solid var(--accent); }
+        textarea { width: 100%; height: 150px; background: rgba(0,0,0,0.2); color: white; border: 1px solid var(--glass-border); border-radius: 10px; padding: 10px; margin-top: 10px; outline: none; }
     </style>
 </head>
 <body>
@@ -81,7 +81,7 @@
 
 <div id="intro" class="page centered-page" style="display:flex;">
     <h1 style="font-size: 3.5rem; letter-spacing: 5px;">ACADEMIA PULSE</h1>
-    <p style="margin-bottom: 20px; opacity: 0.8;">Empowering Kenyan Students through Virtual Science Innovation.</p>
+    <p style="margin-bottom: 20px; opacity: 0.8;">Virtual Science Innovation Hub for the Kenyan Student.</p>
     <button class="btn" onclick="showPage('auth-choice')">Enter Academy</button>
 </div>
  
@@ -124,41 +124,54 @@
     <div style="display: flex;">
         <div class="sidebar">
             <h2 style="color:#ffcc00; text-align:center; margin-bottom:20px;">PULSE</h2>
-            <div class="subject" onclick="loadSubject('Chemistry')">🧪 Chemistry Lab</div>
-            <div class="subject" onclick="loadSubject('Biology')">🌿 Biology Sim</div>
-            <div class="subject" onclick="loadSubject('Geography')">🌍 Geography</div>
-            <div class="subject" onclick="loadSubject('Physics')">⚡ Physics Circuits</div>
-            <div class="subject" onclick="loadSubject('Mathematics')">📐 Mathematics</div>
-            <div class="subject" onclick="loadSubject('PE')">🏃 PE & Health</div>
-            <div class="btn" style="text-align:center; background: #ff4444; margin-top:20px; width:100%;" onclick="loadFunZone()">🎮 FUN ZONE</div>
+            <div class="subject" onclick="loadSubject('Chemistry')">?? Chemistry Lab</div>
+            <div class="subject" onclick="loadSubject('Biology')">?? Biology Sim</div>
+            <div class="subject" onclick="loadSubject('Geography')">?? Geography</div>
+            <div class="subject" onclick="loadSubject('Physics')">? Physics Circuits</div>
+            <div class="subject" onclick="loadSubject('Mathematics')">?? Mathematics</div>
+            <div class="subject" onclick="loadSubject('PE')">?? PE & Health</div>
+            <div class="btn" style="text-align:center; background: #2c3e50; margin-top:20px; width:100%;" onclick="loadAbstractPortal()">?? Project Abstract</div>
+            <div class="btn" style="text-align:center; background: #ff4444; margin-top:10px; width:100%;" onclick="loadFunZone()">?? FUN ZONE</div>
         </div>
  
         <div class="content" id="contentArea">
             <h1 id="welcome-msg">WELCOME</h1>
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px;">
-                <div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:15px; text-align:center;"><h4>Lessons</h4><p style="font-size:2rem;">12</p></div>
-                <div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:15px; text-align:center;"><h4>Rank</h4><p style="font-size:2rem;">#42</p></div>
-                <div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:15px; text-align:center;"><h4>Score</h4><p style="font-size:2rem;">88%</p></div>
+                <div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:15px; text-align:center;"><h4>Lessons Finished</h4><p style="font-size:2rem; font-weight:bold;">12</p></div>
+                <div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:15px; text-align:center;"><h4>National Rank</h4><p style="font-size:2rem; font-weight:bold;">#42</p></div>
+                <div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:15px; text-align:center;"><h4>Avg. Score</h4><p style="font-size:2rem; font-weight:bold;">88%</p></div>
+            </div>
+            
+            <div class="abstract-box">
+                <h3>Kenya Science Congress Quick Info</h3>
+                <p>The 2026 Congress theme focuses on <i>"Sustainable Technology for Climate Resilience."</i></p>
+                <ul style="margin: 10px 20px; font-size: 0.9rem;">
+                    <li>Ensure your simulation data is recorded.</li>
+                    <li>Link your project to a local Kenyan challenge.</li>
+                    <li>Collaborate via the Global Chat.</li>
+                </ul>
             </div>
         </div>
     </div>
 
     <div id="chat-widget">
         <div id="chat-header" onclick="toggleChat()"><span>PulseBot AI</span><span>_</span></div>
-        <div id="chat-logs"><div><b>Bot:</b> Hello! Need help with your subjects?</div></div>
-        <div style="display:flex; border-top:1px solid #ddd;"><input type="text" id="chatIn" style="flex:1; border:none; padding:10px;"><button onclick="sendChat()" style="background:var(--accent); border:none; padding:10px;">Send</button></div>
+        <div id="chat-logs"><div><b>Bot:</b> Ready to help! Mention a subject like "Physics" to start.</div></div>
+        <div style="display:flex; border-top:1px solid #ddd;"><input type="text" id="chatIn" style="flex:1; border:none; padding:10px;"><button onclick="sendChat()" style="background:var(--accent); border:none; padding:10px; font-weight:bold;">Send</button></div>
     </div>
  
     <footer>
-        <p>Project Deployed for <strong>Kenya Science Congress 2026</strong></p>
+        <p>Official Project for <strong>Kenya Science Congress 2026</strong></p>
         <p>Lead Developers: <strong>Justus and Mark</strong></p>
-        <a href="https://wa.me/254715286771" style="color:#25d366; text-decoration:none; font-weight:bold;" target="_blank">WhatsApp: 0715286771</a>
+        <a href="https://wa.me/254715286771" style="color:#25d366; text-decoration:none; font-weight:bold;" target="_blank">
+            <i class="fab fa-whatsapp"></i> WhatsApp: 0715286771
+        </a>
     </footer>
 </div>
  
 <script>
     let vantaEffect = VANTA.NET({ el: "#vanta-canvas", color: 0xffcc00, backgroundColor: 0x0d1b2a, points: 10.0 });
-    let globalUsername = "User";
+    let globalUsername = "Scholar";
     let gameBoard = ["","","","","","","","",""];
 
     function toggleGlobalChat() { document.getElementById('roblox-chat').classList.toggle('minimized'); }
@@ -182,7 +195,7 @@
 
     function loadSubject(name) {
         const area = document.getElementById('contentArea');
-        area.innerHTML = `<h1 style="display:inline-block">${name} Module</h1> <button class="btn" style="float:right;" onclick="location.reload()">Stats</button>`; 
+        area.innerHTML = `<h1>${name} Lab</h1> <button class="btn" style="float:right;" onclick="location.reload()">Back to Stats</button>`; 
         if(name === 'PE') {
             area.innerHTML += `<div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:20px;">
                 <iframe width="100%" height="350" src="https://www.youtube.com/embed/ml6cT4AZdqI" frameborder="0" allowfullscreen></iframe>
@@ -194,11 +207,23 @@
         }
     }
 
+    function loadAbstractPortal() {
+        const area = document.getElementById('contentArea');
+        area.innerHTML = `
+            <h1>Project Abstract Portal</h1>
+            <div class="abstract-box">
+                <p>Submit your 2026 Science Congress proposal below.</p>
+                <input type="text" id="abstract-title" placeholder="Project Title" style="width:100%; padding:10px; margin-top:10px; background:rgba(0,0,0,0.3); color:white; border:1px solid #ffcc00; border-radius:5px;">
+                <textarea id="abstract-text" placeholder="Describe your project, methodology, and expected results..."></textarea>
+                <button class="btn" onclick="alert('Abstract Saved for Review!')">Save Abstract</button>
+            </div>`;
+    }
+
     function loadFunZone() {
         gameBoard = ["","","","","","","","",""];
         const area = document.getElementById('contentArea');
-        area.innerHTML = `<div class="fun-zone-container"><h2>BATTLE ARENA</h2><div id="game-status"><p>Scanning...</p><span id="countdown" style="font-size:3rem; color:var(--accent)">10</span></div>
-            <div id="game-prompt" style="display:none;"><p>No players online. Play Pulse Bot?</p><button class="btn" onclick="startGame()">YES</button></div>
+        area.innerHTML = `<div class="fun-zone-container"><h2>BATTLE ARENA</h2><div id="game-status"><p>Scanning players...</p><span id="countdown" style="font-size:3rem; color:var(--accent)">10</span></div>
+            <div id="game-prompt" style="display:none;"><p>No players found. Play Academia Pulse Bot?</p><button class="btn" onclick="startGame()">CHALLENGE BOT</button></div>
             <div class="ttt-grid" id="grid">${["","","","","","","","",""].map((_, i) => `<div class="cell" id="c${i}" onclick="makeMove(${i})"></div>`).join('')}</div><h2 id="game-result"></h2></div>`;
         let timeLeft = 10;
         let timer = setInterval(() => { timeLeft--; document.getElementById('countdown').innerText = timeLeft; if(timeLeft <= 0){ clearInterval(timer); document.getElementById('game-status').style.display='none'; document.getElementById('game-prompt').style.display='block'; }}, 1000);
@@ -217,7 +242,7 @@
     function checkWinner() {
         const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
         for(let c of w) { if(gameBoard[c[0]] && gameBoard[c[0]] === gameBoard[c[1]] && gameBoard[c[0]] === gameBoard[c[2]]) {
-            document.getElementById('game-result').innerHTML = gameBoard[c[0]] === "X" ? `<span style="color:#00ff00">WINNER: ${globalUsername.toUpperCase()}!</span>` : `<span style="color:#ff4444">YOU LOSE!</span>`;
+            document.getElementById('game-result').innerHTML = gameBoard[c[0]] === "X" ? `<span style="color:#00ff00">CONGRATS ${globalUsername.toUpperCase()}! YOU WIN!</span>` : `<span style="color:#ff4444">YOU LOSE! TRY AGAIN</span>`;
             document.getElementById('grid').classList.remove('active'); return true;
         }}
         if(!gameBoard.includes("")) { document.getElementById('game-result').innerText = "DRAW!"; return true; }
@@ -226,11 +251,20 @@
 
     function sendChat() {
         const i = document.getElementById('chatIn'); if(!i.value) return;
-        document.getElementById('chat-logs').innerHTML += `<div><b>You:</b> ${i.value}</div>`;
-        setTimeout(() => { document.getElementById('chat-logs').innerHTML += `<div><b>Bot:</b> Great question! Let's explore that subject together.</div>`; }, 1000);
+        const log = document.getElementById('chat-logs');
+        log.innerHTML += `<div><b>You:</b> ${i.value}</div>`;
+        const input = i.value.toLowerCase();
+        setTimeout(() => {
+            let res = "I'm analyzing your request. Would you like to check the simulation lab?";
+            if(input.includes("physics")) res = "Physics circuits are quite popular. Make sure to calculate Ohm's Law correctly!";
+            if(input.includes("congress")) res = "The 2026 Science Congress is approaching. Focus on sustainability!";
+            log.innerHTML += `<div><b>Bot:</b> ${res}</div>`;
+            log.scrollTop = log.scrollHeight;
+        }, 1000);
         i.value = "";
     }
 </script>
  
 </body>
 </html>
+
