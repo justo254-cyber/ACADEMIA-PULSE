@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACADEMIA PULSE - Full Suite 2026</title>
+    <title>ACADEMIA PULSE - Master Edition 2026</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
@@ -18,7 +18,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-        body { background-color: #0d1b2a; color: white; min-height: 100vh; overflow: hidden; }
+        body { background-color: #0d1b2a; color: white; min-height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
         #vanta-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
         
         .page { display: none; height: 100vh; width: 100%; position: relative; z-index: 2; flex-direction: column; }
@@ -31,40 +31,45 @@
             display: flex; align-items: center; gap: 8px; font-size: 0.9rem; z-index: 100;
         }
 
-        /* GLOBAL CHAT (TOP RIGHT) */
+        /* DASHBOARD LAYOUT */
+        #dashboard { display: none; height: calc(100vh - 60px); overflow: hidden; }
+        .dashboard-wrapper { display: flex; height: 100%; width: 100%; }
+
+        .sidebar { width: 260px; background: var(--sidebar-glass); backdrop-filter: blur(15px); padding: 20px; border-right: 1px solid var(--glass-border); height: 100%; display: flex; flex-direction: column; flex-shrink: 0; }
+        .subject { background: rgba(255,255,255,0.05); padding: 12px; margin: 6px 0; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
+        .subject:hover { background: var(--accent); color: black; font-weight: bold; }
+
+        .content { flex: 1; padding: 20px; overflow-y: auto; position: relative; }
+        .sim-container { width: 100%; height: calc(100vh - 220px); border-radius: 15px; border: 3px solid var(--accent); background: white; margin-top: 10px; overflow: hidden; }
+        .sim-container iframe { width: 100%; height: 100%; border: none; }
+
+        /* FOOTER */
+        footer { 
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; 
+            background: rgba(13, 27, 42, 0.9); backdrop-filter: blur(10px);
+            border-top: 1px solid var(--glass-border); z-index: 3000;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 30px;
+        }
+        .footer-link { color: #25d366; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+
+        /* PULSEBOT & GLOBAL CHAT */
         #global-chat-box { position: fixed; top: 15px; right: 15px; width: 280px; height: 200px; background: rgba(0,0,0,0.85); border: 1px solid var(--accent); border-radius: 8px; z-index: 4000; display: none; flex-direction: column; }
         #global-chat-box.minimized { height: 35px; overflow: hidden; }
         #chat-header-global { padding: 8px 12px; background: var(--accent); color: #000; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; font-size: 0.8rem; }
         #chat-feed { flex: 1; overflow-y: auto; font-size: 0.75rem; padding: 8px; color: #eee; }
         #chat-input-global { background: rgba(255,255,255,0.1); border: none; border-top: 1px solid #444; color: white; padding: 8px; outline: none; }
 
-        /* AUTH CARDS */
+        #pulsebot-widget { position: fixed; bottom: 70px; right: 20px; width: 300px; background: white; border-radius: 10px; z-index: 2000; transition: 0.3s; color: #333; border: 1px solid #ccc; }
+        #pulsebot-widget.minimized { transform: translateY(calc(100% - 40px)); }
+        #bot-header { background: #1b263b; color: var(--accent); padding: 10px; cursor: pointer; border-radius: 10px 10px 0 0; display: flex; justify-content: space-between; font-weight: bold; }
+        #bot-logs { height: 150px; overflow-y: auto; padding: 10px; font-size: 0.8rem; }
+
+        /* AUTH & CERT */
         .auth-card { background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 30px; border-radius: 20px; width: 100%; max-width: 450px; }
         .auth-card input, .auth-card select { width: 100%; padding: 10px; margin: 6px 0; border: 1px solid var(--glass-border); border-radius: 8px; background: rgba(255,255,255,0.1); color: white; outline: none;}
-
-        /* DASHBOARD LAYOUT */
-        #dashboard { display: none; height: 100vh; overflow: hidden; }
-        .dashboard-wrapper { display: flex; height: 100%; width: 100%; }
-
-        .sidebar { width: 260px; background: var(--sidebar-glass); backdrop-filter: blur(15px); padding: 20px; border-right: 1px solid var(--glass-border); height: 100vh; display: flex; flex-direction: column; flex-shrink: 0; }
-        .subject { background: rgba(255,255,255,0.05); padding: 12px; margin: 6px 0; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
-        .subject:hover { background: var(--accent); color: black; font-weight: bold; }
-
-        .content { flex: 1; padding: 20px; overflow-y: auto; height: 100vh; position: relative; }
-        .sim-container { width: 100%; height: calc(100vh - 160px); border-radius: 15px; border: 3px solid var(--accent); background: white; margin-top: 10px; overflow: hidden; }
-        .sim-container iframe { width: 100%; height: 100%; border: none; }
-        
-        /* PULSEBOT */
-        #pulsebot-widget { position: fixed; bottom: 0; right: 20px; width: 300px; background: white; border-radius: 10px 10px 0 0; z-index: 2000; transition: 0.3s; color: #333; border: 1px solid #ccc; }
-        #pulsebot-widget.minimized { transform: translateY(calc(100% - 40px)); }
-        #bot-header { background: #1b263b; color: var(--accent); padding: 10px; cursor: pointer; display: flex; justify-content: space-between; font-weight: bold; }
-        #bot-logs { height: 160px; overflow-y: auto; padding: 10px; font-size: 0.8rem; }
-
-        /* CERTIFICATE */
         #cert-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index: 5000; justify-content:center; align-items:center; }
-        .certificate { width:700px; background:#fff; padding:50px; border: 15px solid #1b263b; outline: 4px solid var(--accent); color:#1b263b; text-align:center; position:relative; }
+        .certificate { width:700px; background:#fff; padding:50px; border: 15px solid #1b263b; outline: 4px solid var(--accent); color:#1b263b; text-align:center; }
         .cert-name { font-size: 2.5rem; font-family: 'Brush Script MT', cursive; color: #b8860b; border-bottom: 2px solid #ddd; display: inline-block; margin: 15px 0; }
-
         .btn { padding: 12px 25px; border: none; border-radius: 20px; background: var(--accent); font-weight: bold; cursor: pointer; margin: 5px; transition: 0.3s; }
 
         /* FUN ZONE */
@@ -99,7 +104,7 @@
         <div class="cert-name" id="cert-user-name">STUDENT NAME</div>
         <p>from <b><span id="cert-school-name">SCHOOL</span></b></p>
         <p style="margin-top:20px; font-size:0.85rem;">For mastery of virtual research modules and innovation excellence.</p>
-        <button class="btn" onclick="window.print()" style="margin-top:20px;">Download Certificate</button>
+        <button class="btn" onclick="window.print()">Print PDF</button>
     </div>
 </div>
 
@@ -141,7 +146,6 @@
     <div class="dashboard-wrapper">
         <div class="sidebar">
             <h2 style="color:var(--accent); text-align:center;">PULSE</h2>
-            <div style="font-size:0.7rem; color:#00ff00; margin:10px 0; text-align:center;"><i class="fas fa-check-circle"></i> National Sync Active</div>
             <div style="flex:1;">
                 <div class="subject" onclick="loadSubject('Mathematics')">📐 Mathematics Lab</div>
                 <div class="subject" onclick="loadSubject('Chemistry')">🧪 Chemistry Lab</div>
@@ -150,7 +154,7 @@
                 <div class="subject" onclick="loadSubject('Geography')">🌍 Geography Hub</div>
                 <div class="subject" onclick="loadSubject('PE')">🏃 Physical Exercise</div>
             </div>
-            <button class="btn" style="background:#2c3e50; font-size:0.8rem;" onclick="loadAbstractPortal()">📁 Project Abstract</button>
+            <button class="btn" onclick="loadAbstractPortal()">📁 Project Abstract</button>
             <button class="btn" style="background:#d4af37; color:black;" onclick="generateCertificate()">Certificate</button>
             <button class="btn" style="background:#ff4444;" onclick="loadFunZone()">🎮 FUN ZONE</button>
         </div>
@@ -172,6 +176,16 @@
         <div style="display:flex;"><input type="text" id="botIn" style="flex:1; padding:8px; border:none;"><button onclick="sendBotChat()" style="background:var(--accent); border:none; padding:8px;">Send</button></div>
     </div>
 </div>
+
+<footer>
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Seal_of_Kenya.svg" width="30">
+        <span style="font-size: 0.8rem; opacity: 0.7;">&copy; 2026 Academia Pulse | Developed by Justus & Mark</span>
+    </div>
+    <a href="https://wa.me/254700000000" class="footer-link" target="_blank">
+        <i class="fab fa-whatsapp"></i> Chat Support
+    </a>
+</footer>
 
 <script>
     VANTA.NET({ el: "#vanta-canvas", color: 0xffcc00, backgroundColor: 0x0d1b2a });
@@ -212,20 +226,19 @@
         };
         
         if(name === 'PE') {
-            area.innerHTML = `<h3>Physical Exercise Hub</h3>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:15px;">
+            area.innerHTML = `<h3>Physical Exercise Hub</h3><div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:15px;">
                 <iframe width="100%" height="300" src="https://www.youtube.com/embed/ml6cT4AZdqI" style="border-radius:15px; border:2px solid #ffcc00;" allowfullscreen></iframe>
-                <div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:15px;"><h4>Health Log</h4><input type="number" placeholder="BPM" style="padding:10px; width:100%;"><button class="btn" style="width:100%; margin-top:10px;" onclick="alert('Data Saved')">Log Pulse</button></div>
+                <div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:15px;"><h4>Health Log</h4><input type="number" placeholder="Pulse Rate" style="padding:10px; width:100%;"><button class="btn" style="width:100%; margin-top:10px;" onclick="alert('Logged!')">Save</button></div>
             </div>`;
         } else {
-            area.innerHTML = `<h3>${name} Virtual Simulation</h3><div class="sim-container"><iframe src="${links[name]}"></iframe></div>`;
+            area.innerHTML = `<h3>${name} Simulation</h3><div class="sim-container"><iframe src="${links[name]}"></iframe></div>`;
         }
     }
 
     function sendBotChat() {
         const i = document.getElementById('botIn'); if(!i.value) return;
         document.getElementById('bot-logs').innerHTML += `<div><b>You:</b> ${i.value}</div>`;
-        setTimeout(() => { document.getElementById('bot-logs').innerHTML += `<div><b>Bot:</b> Remember to include your control variables in your methodology!</div>`; }, 800);
+        setTimeout(() => { document.getElementById('bot-logs').innerHTML += `<div><b>Bot:</b> Great observation. Have you noted this in your project report?</div>`; }, 800);
         i.value = "";
     }
 
@@ -238,8 +251,8 @@
     function loadFunZone() {
         gameBoard = ["","","","","","","","",""];
         const area = document.getElementById('contentArea');
-        area.innerHTML = `<div class="fun-zone-container"><h2 style="color:var(--accent)">BATTLE ARENA</h2><div id="game-status"><p>Looking for competitors...</p><span id="count">5</span></div>
-            <div id="prompt" style="display:none;"><button class="btn" onclick="document.getElementById('prompt').style.display='none'; document.getElementById('grid').style.display='grid';">Battle PulseBot</button></div>
+        area.innerHTML = `<div class="fun-zone-container"><h2>BATTLE ARENA</h2><div id="game-status"><p>Connecting...</p><span id="count">5</span></div>
+            <div id="prompt" style="display:none;"><button class="btn" onclick="document.getElementById('prompt').style.display='none'; document.getElementById('grid').style.display='grid';">Battle Bot</button></div>
             <div class="ttt-grid" id="grid" style="display:none;">${["","","","","","","","",""].map((_, i) => `<div class="cell" id="c${i}" onclick="makeMove(${i})"></div>`).join('')}</div>
             <h2 id="res" style="color:var(--accent); margin-top:10px;"></h2></div>`;
         let left = 5; let t = setInterval(() => { left--; document.getElementById('count').innerText = left; if(left <= 0){ clearInterval(t); document.getElementById('game-status').style.display='none'; document.getElementById('prompt').style.display='block'; }}, 1000);
@@ -263,7 +276,7 @@
     }
 
     function loadAbstractPortal() {
-        document.getElementById('contentArea').innerHTML = `<h3>Research Abstract Portal</h3><textarea style="width:100%; height:200px; background:rgba(0,0,0,0.4); color:white; border:1px solid var(--accent); padding:10px;"></textarea><button class="btn">Submit Abstract</button>`;
+        document.getElementById('contentArea').innerHTML = `<h3>Research Abstract</h3><textarea style="width:100%; height:200px; background:rgba(0,0,0,0.4); color:white; border:1px solid var(--accent); padding:10px;"></textarea><button class="btn">Submit</button>`;
     }
 
     showPage('intro');
